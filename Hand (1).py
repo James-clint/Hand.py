@@ -83,15 +83,3 @@ webrtc_streamer(
     media_stream_constraints={"video": True, "audio": False},
     async_processing=True,
 )
-
-
-
-
-webrtc_streamer(
-    key="hand-recog",
-    mode=WebRtcMode.SENDRECV,
-    video_processor_factory=videoProcessor,
-    rtc_configuration=rtc_configuration,
-    media_stream_constraints={"video": True, "audio": False},
-    async_processing=True,
-)
