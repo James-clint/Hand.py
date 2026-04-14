@@ -1,4 +1,3 @@
-%%writefile Hand.py
 import cv2
 import av
 import mediapipe as mp
