@@ -1,3 +1,4 @@
+%%writefile Hand.py
 import cv2
 import av
 import mediapipe as mp
@@ -8,7 +9,7 @@ from mediapipe import Image, ImageFormat
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-base_options = python.BaseOptions(model_asset_path='hand_landmarker.task')
+base_options = python.BaseOptions(model_asset_path='/content/hand_landmarker.task')
 options = vision.HandLandmarkerOptions( base_options=base_options, num_hands=1, min_hand_detection_confidence=0.7, min_hand_presence_confidence=0.5, min_tracking_confidence=0.5)
 detector = vision.HandLandmarker.create_from_options(options)
 
@@ -63,24 +64,26 @@ st.write("Real Time Hand Detection and Recognition")
 rtc_configuration = RTCConfiguration(
     {
         "iceServers": [
-
-            {"urls": "stun:stun.l.google.com:19302"},
-            {"urls": "stun:stun1.l.google.com:19302"},
-            {"urls": "stun:stun2.l.google.com:19302"},
-
-
-            {
-                "urls": [
-                    "turn:openrelay.metered.ca:80",
-                    "turn:openrelay.metered.ca:443",
-                    "turn:openrelay.metered.ca:443?transport=tcp"
-                ],
-                "username": "openrelayproject",
-                "credential": "openrelayproject"
-            }
+            {'url': 'stun:global.stun.twilio.com:3478', 'urls': 'stun:global.stun.twilio.com:3478'},
+{'credential': 'ZAEmMyLBBpCR4YjaLUI8R+4qKXyV+WdCl1XSfr7a4+I=', 'url': 'turn:global.turn.twilio.com:3478?transport=udp', 'urls': 'turn:global.turn.twilio.com:3478?transport=udp', 'username': 'b11fda7c87d0ae41c89793d1f7c2cf9c59eaad6c072571b084806a179d126e33'}, 
+{'credential': 'ZAEmMyLBBpCR4YjaLUI8R+4qKXyV+WdCl1XSfr7a4+I=', 'url': 'turn:global.turn.twilio.com:3478?transport=tcp', 'urls': 'turn:global.turn.twilio.com:3478?transport=tcp', 'username': 'b11fda7c87d0ae41c89793d1f7c2cf9c59eaad6c072571b084806a179d126e33'},
+{'credential': 'ZAEmMyLBBpCR4YjaLUI8R+4qKXyV+WdCl1XSfr7a4+I=', 'url': 'turn:global.turn.twilio.com:443?transport=tcp', 'urls': 'turn:global.turn.twilio.com:443?transport=tcp', 'username': 'b11fda7c87d0ae41c89793d1f7c2cf9c59eaad6c072571b084806a179d126e33'}
         ]
     }
 )
+
+
+
+
+webrtc_streamer(
+    key="hand-recog",
+    mode=WebRtcMode.SENDRECV,
+    video_processor_factory=videoProcessor,
+    rtc_configuration=rtc_configuration,
+    media_stream_constraints={"video": True, "audio": False},
+    async_processing=True,
+)
+
 
 
 
